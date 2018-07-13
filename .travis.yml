@@ -1,0 +1,19 @@
+sudo: true
+
+language: python3
+    - "3.5"
+
+addons:
+  apt:
+    packages:
+      - "python3.5"
+      - "python3-pip"
+
+install:
+    - sudo python3.5 -m pip install pip --upgrade
+    - sudo python3.5 -m pip install setuptools --upgrade
+    - sudo python3.5 -m pip install --ignore-installed pytest --upgrade
+    - sudo python3.5 -m pip install --ignore-installed -r requirements.txt
+
+script:
+    - python3.5 -m pytest --verbose

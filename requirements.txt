@@ -1,0 +1,3 @@
+docopt
+python-can
+mock
