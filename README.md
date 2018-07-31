@@ -80,14 +80,14 @@ On a Windows system `socketcan` is not available so the `bustype` and `channel` 
 If you've installed the Kvaser SDK you need to run:
 
 ```bash
-# Default Kvaser CANlib usage for Kia Soul Petrol
+# Default Kvaser CANlib usage
 ./can_we_talk.py -c 0 -b kvaser
 ```
 
 Using PCAN drivers you can run:
 
 ```bash
-# Default PEAK PCAN-USB usage for Kia Niro
+# Default PEAK PCAN-USB usage
 ./can_we_talk.py -c PCAN_USBBUS1 -b pcan
 ```
 
