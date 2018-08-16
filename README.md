@@ -8,7 +8,7 @@ _Talking to your vehicle over the CAN bus with Python_
 
 Superficially, the purpose of this Python 3 program is to provide examples to supplement the
 talk titled _CAN we talk Python? Talking to your vehicle over the CAN bus with Python_, first
-given at the PDX Python User Group in July of 2018.
+given at the PDX Python User Group in July of 2018.  You can watch the video (here)[https://www.youtube.com/watch?v=r1QgGO23ob4].
 
 The program itself however, actually does interesting things. When properly configured and connected
 to your vehicle's OBD-II port, this program retrieves the following information from the vehicle:
