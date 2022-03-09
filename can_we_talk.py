@@ -12,8 +12,10 @@ Options:
 # This is the module required for everything CAN bus. It is not default on most systems though
 # and needs to be installed with something like `pip install python-can`
 import can
+
 # This is a requirement for this tool's command line argument handling.
 from docopt import docopt
+
 # This module exposes everything we need to set wait and timeout intervals.
 import time
 
@@ -22,6 +24,7 @@ class OBD(object):
     """
     Utility Class for unpacking OBD-II response data.
     """
+
     _obd_standards_dictionary = {
         1: "OBD-II as defined by the [California Air Resources Board|CARB]",
         2: "OBD as defined by the [United States Environmental Protection Agency|EPA]",
@@ -55,7 +58,8 @@ class OBD(object):
         30: "Korean OBD (KOBD)",
         31: "India OBD I (IOBD I)",
         32: "India OBD II (IOBD II)",
-        33: "Heavy Duty Euro OBD Stage VI (HD EOBD-IV)", }
+        33: "Heavy Duty Euro OBD Stage VI (HD EOBD-IV)",
+    }
 
     @staticmethod
     def get_A(data):
@@ -124,24 +128,20 @@ class CanBus(object):
     CanBus class for to connecting to, and communicating on your vehicle's OBD-II CAN bus.
     """
 
-    def __init__(
-            self,
-            bustype='socketcan_native',
-            channel='can0',
-            bitrate=500000):
+    def __init__(self, bustype="socketcan_native", channel="can0", bitrate=500000):
         """
         Connect to CAN bus on instantiation.
         """
 
         try:
             self.bus = can.interface.Bus(
-                bustype=bustype,
-                channel=channel,
-                bitrate=int(bitrate))
+                bustype=bustype, channel=channel, bitrate=int(bitrate)
+            )
         except:
             raise Exception(
-                'unable to connect to CAN bus, check that hardware '
-                'is connected and that socketcan is active')
+                "unable to connect to CAN bus, check that hardware "
+                "is connected and that socketcan is active"
+            )
 
         self.query_id = 0x7DF
         self.reply_id = 0x7E8
@@ -171,13 +171,11 @@ class CanBus(object):
         query_frame = [0x02, 0x01, pid, 0x55, 0x55, 0x55, 0x55, 0x55]
 
         msg = can.Message(
-            arbitration_id=self.query_id,
-            data=query_frame, extended_id=False)
+            arbitration_id=self.query_id, data=query_frame, extended_id=False
+        )
         self.bus.send(msg, timeout=timeout)
 
-    def get_response(
-            self,
-            timeout=1.0):
+    def get_response(self, timeout=1.0):
         """
         Return first qualifying reply received.
         """
@@ -201,13 +199,11 @@ def main(args):
     https://en.wikipedia.org/wiki/OBD-II_PIDs#Standard_PIDs.
     """
 
-    if args['--version']:
-        print('can_we_talk 0.1.0')
+    if args["--version"]:
+        print("can_we_talk 0.1.0")
         return
 
-    bus = CanBus(
-        bustype=args['--bustype'],
-        channel=args['--channel'])
+    bus = CanBus(bustype=args["--bustype"], channel=args["--channel"])
 
     pid = 0x1C  # conforming OBD-II standard
 
@@ -215,10 +211,10 @@ def main(args):
     reply = bus.get_response()
 
     if reply is None:
-        print('unable to read OBD standard this vehicle conforms to')
+        print("unable to read OBD standard this vehicle conforms to")
     else:
         standard = OBD.get_obd_standard(reply)
-        print('OBD standard this vehicle conforms to:', standard)
+        print("OBD standard this vehicle conforms to:", standard)
 
     pid = 0x2F  # fuel tank level
 
@@ -226,10 +222,10 @@ def main(args):
     reply = bus.get_response()
 
     if reply is None:
-        print('unable to read fuel tank level')
+        print("unable to read fuel tank level")
     else:
         percent = OBD.get_fuel_tank_level(reply)
-        print('Fuel tank level: %s' % percent, 'percent')
+        print("Fuel tank level: %s" % percent, "percent")
 
     pid = 0x1F  # seconds since engine start
 
@@ -237,10 +233,10 @@ def main(args):
     reply = bus.get_response()
 
     if reply is None:
-        print('unable to read run time since engine start')
+        print("unable to read run time since engine start")
     else:
         seconds = OBD.get_seconds_since_start(reply)
-        print('run time since engine start:', seconds, 'seconds')
+        print("run time since engine start:", seconds, "seconds")
 
 
 if __name__ == "__main__":
